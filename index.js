@@ -2,7 +2,7 @@ const canvas = document.getElementById("canvas");
 const context = canvas.getContext("2d");
 context.font = "30px Arial";
 canvas.width = 700;
-canvas.height = 600;
+canvas.height = 900;
 const fridge = new Image();
 const man = new Image();
 const ground = new Image();
@@ -34,10 +34,10 @@ function updateDisplay(frame,groundMove){
   PlayerMan1.speedUpdate()
   context.fillStyle = 'black';
   context.fillRect(0,0,canvas.width,canvas.height);
-  context.drawImage(ground,0-groundMove,190);
-  context.drawImage(ground,500-groundMove,190);
-  context.drawImage(ground,1000-groundMove,190);
-  context.drawImage(fridge,0+(Math.floor(frame/animationSpeed)*30),0,30+(Math.floor(frame/animationSpeed)*40),70,100,120,30+(Math.floor(frame/animationSpeed)*40),70);
+  context.drawImage(ground,0-groundMove,500);
+  context.drawImage(ground,500-groundMove,500);
+  context.drawImage(ground,1000-groundMove,500);
+  context.drawImage(fridge,0+(Math.floor(frame/animationSpeed)*30),0,30+(Math.floor(frame/animationSpeed)*40),70,100,430,30+(Math.floor(frame/animationSpeed)*40),70);
   context.drawImage(man,0+(Math.floor(PlayerMan1.frame/PlayerMan1.animationSpeed())*80),0+90*PlayerMan1.weightLevel,80+(Math.floor(PlayerMan1.frame/PlayerMan1.animationSpeed())*10),90,PlayerMan1.xPos,PlayerMan1.yPos,80+(Math.floor(PlayerMan1.frame/PlayerMan1.animationSpeed())*10),90);
 }
 
@@ -51,22 +51,11 @@ function loop(){
   if (groundMove>=500){groundMove=0}
   updateDisplay(frame,groundMove);
 }
-const PlayerMan1 = new Man(300,100,0)
+const PlayerMan1 = new Man(300,410,0)
 
 window.addEventListener('keydown', (event)=> {
-  if (event.key == 'd'){
-  myObject1.adjustOrientation(-.25,0)
-}
-  else if (event.key == 'w'){
-  myObject1.adjustOrientation(0,-.25)
-}
-  else if (event.key == 'a'){
-  myObject1.adjustOrientation(.25,0)
-}
-  else if (event.key == 's'){
-  myObject1.adjustOrientation(0,.25)
-}
-  else if (event.key == 'z'){
+
+ if (event.key == 'z'){
     if (PlayerMan1.weightLevel<5){
     PlayerMan1.weightLevel+=1;
   }
