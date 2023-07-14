@@ -191,7 +191,21 @@ window.addEventListener('keydown', (event)=> {
     laserbeamActive=true;
     laserbeamCharge-=10
   }
-})
+});
+
+addEventListener("touchstart", (event) => {
+  if(event.touches[0].clientY>=700 && event.touches[0].clientY<=768){
+    if(event.touches[0].clientX>=217 && event.touches[0].clientX<=271 && laserbeamCharge>=2){
+      foodObjects.push(new Food(170,420));
+      laserbeamCharge-=2;
+    }
+    else if(event.touches[0].clientX>=355 && event.touches[0].clientX<=459 && laserbeamCharge>=10){
+      laserbeamActive=true;
+      laserbeamCharge-=10;
+    }
+
+}
+});
 countDowns.src = "Countdowns.png";
 countDowns.onload = () =>{
   buttons.src = "Buttons.png";
