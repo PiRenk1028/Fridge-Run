@@ -14,7 +14,7 @@ const buttons = new Image();
 const countDowns = new Image();
 const winScreen = new Image();
 const loseScreen = new Image();
-fullAnimationTime = 20
+fullAnimationTime = 18;
 animationSpeed = fullAnimationTime/2
 frame = 0;
 groundMove = 0;
@@ -25,6 +25,7 @@ gameOver = false;
 laserbeamCharge = 0;
 const foodObjects = [];
 win = false;
+gameOverFrames = 0;
 
 class Food{
   constructor(xPos,yPos){
@@ -34,10 +35,10 @@ class Food{
     this.active = true;
   }
   move(target){
-    this.xPos+=5;
+    this.xPos+=4;
     this.frameUpdate()
     if (this.xPos+50>=target.xPos && this.xPos+50<=target.xPos+90 && this.active){
-      target.weightLevel+=2;
+      target.weightLevel+=1;
       if (target.weightLevel >= 6){
         target.weightLevel=5;
         gameOver=true;
@@ -134,11 +135,12 @@ function updateDisplay(frame,groundMove,laserbeamFrame){
   for (let i = 0;i<laserbeamFrame;i++){
     context.drawImage(laserbeam,170+50*i,420);
     if (170+50*i>=PlayerMan1.xPos && 170+50*i<=PlayerMan1.xPos+90){
-      PlayerMan1.frozen=true
+      PlayerMan1.frozen=true;
     }
   }
 }
 else{
+  gameOverFrames += 1;
   if (!win){
     context.drawImage(loseScreen,0,0);
   }
@@ -181,7 +183,7 @@ function loop(){
   if (groundMove>=500){groundMove=0}
   updateDisplay(frame,groundMove,laserbeamFrame);
 }
-const PlayerMan1 = new Man(350,410,3)
+const PlayerMan1 = new Man(300,410,3)
 
 window.addEventListener('keydown', (event)=> {
 
@@ -196,7 +198,7 @@ window.addEventListener('keydown', (event)=> {
   }
   }
   else if (event.key == 'r'){
-    PlayerMan1.xPos=350;
+    PlayerMan1.xPos=300;
     PlayerMan1.weightLevel = 3
   }
   else if (event.key == 'k' && laserbeamCharge>=2){
@@ -210,7 +212,7 @@ window.addEventListener('keydown', (event)=> {
 });
 
 addEventListener("touchstart", (event) => {
-  if(event.touches[0].clientY>=700 && event.touches[0].clientY<=768){
+  if(event.touches[0].clientY>=700 && event.touches[0].clientY<=768 && !gameOver){
     if(event.touches[0].clientX>=217 && event.touches[0].clientX<=271 && laserbeamCharge>=2){
       foodObjects.push(new Food(170,420));
       laserbeamCharge-=2;
@@ -221,14 +223,17 @@ addEventListener("touchstart", (event) => {
     }
 
 }
-  else if (gameOver){
+  else if (gameOver && gameOverFrames>=15){
     gameOver = false;
-    PlayerMan1.xPos = 350;
+    PlayerMan1.xPos = 300;
     PlayerMan1.yPos = 410;
     PlayerMan1.weightLevel = 3;
+    PlayerMan1.frozen = false
+    PlayerMan1.frozenCounter = 0
     laserbeamFrame = 0;
     laserbeamActive = false;
     laserbeamCharge = 0;
+    gameOverFrames = 0;
     for (let l = 0; l<foodObjects.length;l++){
       foodObjects.pop();
     }
