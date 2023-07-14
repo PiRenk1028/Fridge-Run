@@ -12,6 +12,8 @@ const junkFood = new Image();
 const laserbeamChargeImg = new Image();
 const buttons = new Image();
 const countDowns = new Image();
+const winScreen = new Image();
+const loseScreen = new Image();
 fullAnimationTime = 20
 animationSpeed = fullAnimationTime/2
 frame = 0;
@@ -22,6 +24,7 @@ laserbeamActive = false;
 gameOver = false;
 laserbeamCharge = 0;
 const foodObjects = [];
+win = false;
 
 class Food{
   constructor(xPos,yPos){
@@ -38,6 +41,7 @@ class Food{
       if (target.weightLevel >= 6){
         target.weightLevel=5;
         gameOver=true;
+        win = true;
       }
       this.active=false;
     }
@@ -77,10 +81,14 @@ class Man{
     if (!this.frozen){
       this.xPos+=10-this.animationSpeed();
   }
-  if (this.xPos>=100 && this.xPos<=130){
+  if (this.xPos<=130){
     gameOver = true;
+    win = true;
   }
-
+  if (this.xPos>700){
+    gameOver = true;
+    win = false;
+  }
 }
 }
 
@@ -128,6 +136,14 @@ function updateDisplay(frame,groundMove,laserbeamFrame){
     if (170+50*i>=PlayerMan1.xPos && 170+50*i<=PlayerMan1.xPos+90){
       PlayerMan1.frozen=true
     }
+  }
+}
+else{
+  if (!win){
+    context.drawImage(loseScreen,0,0);
+  }
+  else if (win){
+    context.drawImage(winScreen,0,0);
   }
 }
 }
@@ -205,25 +221,43 @@ addEventListener("touchstart", (event) => {
     }
 
 }
+  else if (gameOver){
+    gameOver = false;
+    PlayerMan1.xPos = 350;
+    PlayerMan1.yPos = 410;
+    PlayerMan1.weightLevel = 3;
+    laserbeamFrame = 0;
+    laserbeamActive = false;
+    laserbeamCharge = 0;
+    for (let l = 0; l<foodObjects.length;l++){
+      foodObjects.pop();
+    }
+  }
 });
-countDowns.src = "Countdowns.png";
-countDowns.onload = () =>{
-  buttons.src = "Buttons.png";
-  buttons.onload = () =>{
-    laserbeamChargeImg.src = "LaserbeamCharge.png";
-    laserbeamChargeImg.onload = () =>{
-      junkFood.src = "JunkFood.png";
-      junkFood.onload = () =>{
-        iceCube.src = "Ice_cube.png";
-        iceCube.onload = () =>{
-          laserbeam.src = 'Laserbeam.png';
-          laserbeam.onload = () =>{
-            ground.src = 'ground.png';
-            ground.onload = () =>{
-              man.src = 'Man.png';
-              man.onload = () =>{
-                fridge.src = 'EvilFridge.png';
-                fridge.onload = () => {loop();}
+winScreen.src = "Game_End_Win_Screen.png";
+winScreen.onload = () =>{
+  loseScreen.src = "Game_End_Lose_Screen.png";
+  loseScreen.onload = () =>{
+    countDowns.src = "Countdowns.png";
+    countDowns.onload = () =>{
+      buttons.src = "Buttons.png";
+      buttons.onload = () =>{
+        laserbeamChargeImg.src = "LaserbeamCharge.png";
+        laserbeamChargeImg.onload = () =>{
+          junkFood.src = "JunkFood.png";
+          junkFood.onload = () =>{
+            iceCube.src = "Ice_cube.png";
+            iceCube.onload = () =>{
+              laserbeam.src = 'Laserbeam.png';
+              laserbeam.onload = () =>{
+                ground.src = 'ground.png';
+                ground.onload = () =>{
+                  man.src = 'Man.png';
+                  man.onload = () =>{
+                    fridge.src = 'EvilFridge.png';
+                    fridge.onload = () => {loop();}
+                  }
+                }
               }
             }
           }
