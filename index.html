@@ -1,9 +1,12 @@
 <html>
 <style>
 body {background-color: gray;}
+.disable-dbl-tap-zoom {
+  touch-action: manipulation;
+}
 </style>
 <title>Fridge Chase</title>
-<canvas id = "canvas"></canvas>
+<canvas id = "canvas" class="disable-dbl-tap-zoom"></canvas>
 <script src = "index.js"></script>
 <body></body>
 </html>
