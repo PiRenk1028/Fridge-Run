@@ -35,7 +35,7 @@ class Food{
     this.active = true;
   }
   move(target){
-    this.xPos+=4;
+    this.xPos+=7;
     this.frameUpdate()
     if (this.xPos+50>=target.xPos && this.xPos+50<=target.xPos+90 && this.active){
       target.weightLevel+=1;
