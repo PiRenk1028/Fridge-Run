@@ -35,7 +35,7 @@ class Food{
     this.active = true;
   }
   move(target){
-    this.xPos+=7;
+    this.xPos+=8;
     this.frameUpdate()
     if (this.xPos+50>=target.xPos && this.xPos+50<=target.xPos+90 && this.active){
       target.weightLevel+=1;
@@ -183,7 +183,7 @@ function loop(){
   if (groundMove>=500){groundMove=0}
   updateDisplay(frame,groundMove,laserbeamFrame);
 }
-const PlayerMan1 = new Man(300,410,3)
+const PlayerMan1 = new Man(325,410,3)
 
 window.addEventListener('keydown', (event)=> {
 
@@ -198,7 +198,7 @@ window.addEventListener('keydown', (event)=> {
   }
   }
   else if (event.key == 'r'){
-    PlayerMan1.xPos=300;
+    PlayerMan1.xPos=325;
     PlayerMan1.weightLevel = 3
   }
   else if (event.key == 'k' && laserbeamCharge>=2){
@@ -225,7 +225,7 @@ addEventListener("touchstart", (event) => {
 }
   else if (gameOver && gameOverFrames>=15){
     gameOver = false;
-    PlayerMan1.xPos = 300;
+    PlayerMan1.xPos = 325;
     PlayerMan1.yPos = 410;
     PlayerMan1.weightLevel = 3;
     PlayerMan1.frozen = false
