@@ -14,6 +14,8 @@ const buttons = new Image();
 const countDowns = new Image();
 const winScreen = new Image();
 const loseScreen = new Image();
+const fireImg = new Image();
+const originXPlayer = 350;
 fullAnimationTime = 18;
 animationSpeed = fullAnimationTime/2
 frame = 0;
@@ -26,6 +28,9 @@ laserbeamCharge = 0;
 const foodObjects = [];
 win = false;
 gameOverFrames = 0;
+fire = false;
+fireFrame = 0;
+fireFrameAnimationSpeed = 5;
 
 class Food{
   constructor(xPos,yPos){
@@ -35,7 +40,7 @@ class Food{
     this.active = true;
   }
   move(target){
-    this.xPos+=8;
+    this.xPos+=7;
     this.frameUpdate()
     if (this.xPos+50>=target.xPos && this.xPos+50<=target.xPos+90 && this.active){
       target.weightLevel+=1;
@@ -70,7 +75,7 @@ class Man{
   }
   speedUpdate(){
     if (this.frozen){
-      if (this.frozenCounter>=65){
+      if (this.frozenCounter>=75){
         this.frozen = false;
         this.frozenCounter = 0
       }
@@ -94,7 +99,14 @@ class Man{
 }
 
 function updateDisplay(frame,groundMove,laserbeamFrame){
-  if (!gameOver){
+  if (fire){
+    context.drawImage(fireImg,0,0+36*Math.floor(fireFrame/fireFrameAnimationSpeed),36,36,332,432,36,36);
+    if (fireFrame+1>=fireFrameAnimationSpeed*7){
+      fireFrame=0;
+    }
+    else{fireFrame+=1}
+  }
+  else if (!gameOver){
   PlayerMan1.speedUpdate()
   context.fillStyle = 'black';
   context.fillRect(0,0,canvas.width,canvas.height);
@@ -183,7 +195,7 @@ function loop(){
   if (groundMove>=500){groundMove=0}
   updateDisplay(frame,groundMove,laserbeamFrame);
 }
-const PlayerMan1 = new Man(325,410,3)
+const PlayerMan1 = new Man(originXPlayer,410,2)
 
 window.addEventListener('keydown', (event)=> {
 
@@ -198,7 +210,7 @@ window.addEventListener('keydown', (event)=> {
   }
   }
   else if (event.key == 'r'){
-    PlayerMan1.xPos=325;
+    PlayerMan1.xPos=originXPlayer;
     PlayerMan1.weightLevel = 3
   }
   else if (event.key == 'k' && laserbeamCharge>=2){
@@ -225,7 +237,7 @@ addEventListener("touchstart", (event) => {
 }
   else if (gameOver && gameOverFrames>=15){
     gameOver = false;
-    PlayerMan1.xPos = 325;
+    PlayerMan1.xPos = originXPlayer;
     PlayerMan1.yPos = 410;
     PlayerMan1.weightLevel = 3;
     PlayerMan1.frozen = false
@@ -239,28 +251,31 @@ addEventListener("touchstart", (event) => {
     }
   }
 });
-winScreen.src = "Game_End_Win_Screen.png";
-winScreen.onload = () =>{
-  loseScreen.src = "Game_End_Lose_Screen.png";
-  loseScreen.onload = () =>{
-    countDowns.src = "Countdowns.png";
-    countDowns.onload = () =>{
-      buttons.src = "Buttons.png";
-      buttons.onload = () =>{
-        laserbeamChargeImg.src = "LaserbeamCharge.png";
-        laserbeamChargeImg.onload = () =>{
-          junkFood.src = "JunkFood.png";
-          junkFood.onload = () =>{
-            iceCube.src = "Ice_cube.png";
-            iceCube.onload = () =>{
-              laserbeam.src = 'Laserbeam.png';
-              laserbeam.onload = () =>{
-                ground.src = 'ground.png';
-                ground.onload = () =>{
-                  man.src = 'Man.png';
-                  man.onload = () =>{
-                    fridge.src = 'EvilFridge.png';
-                    fridge.onload = () => {loop();}
+fireImg.src = "Fire.png";
+fireImg.onload = () =>{
+  winScreen.src = "Game_End_Win_Screen.png";
+  winScreen.onload = () =>{
+    loseScreen.src = "Game_End_Lose_Screen.png";
+    loseScreen.onload = () =>{
+      countDowns.src = "Countdowns.png";
+      countDowns.onload = () =>{
+        buttons.src = "Buttons.png";
+        buttons.onload = () =>{
+          laserbeamChargeImg.src = "LaserbeamCharge.png";
+          laserbeamChargeImg.onload = () =>{
+            junkFood.src = "JunkFood.png";
+            junkFood.onload = () =>{
+              iceCube.src = "Ice_cube.png";
+              iceCube.onload = () =>{
+                laserbeam.src = 'Laserbeam.png';
+                laserbeam.onload = () =>{
+                  ground.src = 'ground.png';
+                  ground.onload = () =>{
+                    man.src = 'Man.png';
+                    man.onload = () =>{
+                      fridge.src = 'EvilFridge.png';
+                      fridge.onload = () => {loop();}
+                    }
                   }
                 }
               }
